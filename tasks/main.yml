@@ -1,0 +1,20 @@
+---
+# tasks file for direnv
+- name: Skip if OS is supported
+  fail:
+    msg: This system is not supported
+  when: ansible_os_family != "RedHat" and ansible_os_family != "Debian"
+  tags:
+    - always
+- name: Download direnv binaries
+  import_tasks: download_direnv_bins.yml
+- name: Update bash profile to load envs
+  import_tasks: bashrc_direnv_update.yml
+- name: Update bash profile to show envs
+  import_tasks: show_loaded_env.yml
+- name: Installing virtualenv
+  import_tasks: install_virtualenv.yml
+  when: ( ansible_os_family == "RedHat" and ( ansible_distribution_major_version != "5" ))
+     or ( ansible_os_family == "Debian" and ( ansible_distribution_major_version in ["14","16","18"] ))
+  tags:
+    - virtenv_install

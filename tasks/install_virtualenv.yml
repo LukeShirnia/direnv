@@ -1,0 +1,12 @@
+---
+- name: RedHat OS family yum install virtualenv
+  yum:
+    name: python-virtualenv
+    state: latest
+  when: ansible_os_family == "RedHat"
+
+- name: Debian OS family apt install virtualenv
+  apt:
+    name: python-virtualenv
+    state: latest
+  when: ansible_os_family == "Debian"

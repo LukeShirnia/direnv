@@ -1,0 +1,25 @@
+---
+- name: Update /home/{{ user }}/.bashrc profile to show envs
+  blockinfile:
+    path: /home/{{ user  }}/.bashrc
+    block: |
+      show_virtual_env() {
+      if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then
+         echo "($(basename $VIRTUAL_ENV))"
+      fi
+      }
+      export -f show_virtual_env
+      PS1='$(show_virtual_env)'$PS1
+  when: user != "default"
+
+- name: Update /root/.bashrc to show envs
+  blockinfile:
+    path: /root/.bashrc
+    block: |
+      show_virtual_env() {
+      if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then
+         echo "($(basename $VIRTUAL_ENV))"
+      fi
+      }
+      export -f show_virtual_env
+      PS1='$(show_virtual_env)'$PS1

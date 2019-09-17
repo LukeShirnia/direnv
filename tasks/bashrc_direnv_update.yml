@@ -1,0 +1,13 @@
+---
+- name: Update {{ user  }} bash profile to load envs
+  lineinfile:
+    path: /home/{{ user  }}/.bashrc
+    line: eval "$(direnv hook bash)"
+    create: yes
+  when: user != "default"
+
+- name: Update /root/.bashrc to load envs
+  lineinfile:
+    path: /root/.bashrc
+    line: eval "$(direnv hook bash)"
+    create: yes

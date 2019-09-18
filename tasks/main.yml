@@ -6,12 +6,19 @@
   when: ansible_os_family != "RedHat" and ansible_os_family != "Debian"
   tags:
     - always
-- name: Download direnv binaries
+- name: Download latest direnv binary
   import_tasks: download_direnv_bins.yml
+  tags:
+    - direnv_binary
 - name: Update bash profile to load envs
   import_tasks: bashrc_direnv_update.yml
+  tags:
+    - direnv_load_envs
+    - direnv_show_envs
 - name: Update bash profile to show envs
   import_tasks: show_loaded_env.yml
+  tags:
+    - direnv_show_envs
 - name: Installing virtualenv
   import_tasks: install_virtualenv.yml
   when: ( ansible_os_family == "RedHat" and ( ansible_distribution_major_version != "5" ))
